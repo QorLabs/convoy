@@ -66,9 +66,9 @@ services:
         ports:
             - "5432:5432"
         environment:
-            POSTGRESQL_DATABASE: convoy
-            POSTGRESQL_USERNAME: convoy
-            POSTGRES_PASSWORD: pg_password
+            POSTGRESQL_DATABASE: postgres
+            POSTGRESQL_USERNAME: postgres
+            POSTGRES_PASSWORD: postgres
             POSTGRESQL_MAX_CONNECTIONS: 250
             POSTGRESQL_POSTGRES_PASSWORD: postgres
             POSTGRESQL_SHARED_PRELOAD_LIBRARIES: pg_stat_statements
