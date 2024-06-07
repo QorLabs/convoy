@@ -31,8 +31,8 @@ pgdata
 
 # Convoy specific
 convoy
-convoy.json
-docker-compose.yml
+./convoy.json
+./docker-compose.yml
 compose.yml
 typesense_data
 postgres_data

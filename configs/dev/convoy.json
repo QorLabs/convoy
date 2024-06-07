@@ -1,0 +1,13 @@
+{
+    "host": "hooks.dev.qorlabs.io",
+    "database": {
+        "host": "pgbouncer",
+        "username": "postgres",
+        "password": "postgres",
+        "database": "convoy",
+        "port": 6432
+    },
+    "redis": {
+        "host": "redis"
+    }
+}
