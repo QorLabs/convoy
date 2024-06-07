@@ -24,7 +24,7 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
-            redis-server:
+            redis_server:
                 condition: service_healthy
 
     worker:
