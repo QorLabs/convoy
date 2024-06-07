@@ -22,8 +22,10 @@ services:
             retries: 3
             start_period: 5s
         depends_on:
-            - postgres
-            - redis_server
+            postgres:
+                condition: service_healthy
+            redis-server:
+                condition: service_healthy
 
     worker:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
