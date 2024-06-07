@@ -23,8 +23,8 @@ services:
             - ./convoy.json:/convoy.json
         restart: unless-stopped
         depends_on:
-            web:
-                condition: service_healthy
+            - web
+                # condition: service_healthy
 
     ingest:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
@@ -33,8 +33,8 @@ services:
             - ./convoy.json:/convoy.json
         restart: unless-stopped
         depends_on:
-            web:
-                condition: service_healthy
+            - web
+                # condition: service_healthy
 
     pgbouncer:
         image: bitnami/pgbouncer:latest
