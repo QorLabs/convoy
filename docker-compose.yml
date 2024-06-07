@@ -81,4 +81,6 @@ services:
 
 volumes:
     postgresql_master_data:
+        external: true
     redis_data:
+        external: true
