@@ -1,1 +1,1 @@
-"postgres" "postgres"
+"convoy" "pg_password"
