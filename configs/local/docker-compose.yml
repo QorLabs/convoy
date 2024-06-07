@@ -46,19 +46,19 @@ services:
             web:
                 condition: service_healthy
 
-    pgbouncer:
-        image: bitnami/pgbouncer:latest
-        hostname: pgbouncer
-        restart: unless-stopped
-        depends_on:
-            - postgres
-        env_file:
-            - ./conf/.env
-        volumes:
-            - ./conf/:/bitnami/pgbouncer/conf/
-            - ./conf/userlists.txt:/bitnami/userlists.txt
-        ports:
-            - "6432:6432"
+    # pgbouncer:
+    #     image: bitnami/pgbouncer:latest
+    #     hostname: pgbouncer
+    #     restart: unless-stopped
+    #     depends_on:
+    #         - postgres
+    #     env_file:
+    #         - ./conf/.env
+    #     volumes:
+    #         - ./conf/:/bitnami/pgbouncer/conf/
+    #         - ./conf/userlists.txt:/bitnami/userlists.txt
+    #     ports:
+    #         - "6432:6432"
 
     postgres:
         image: bitnami/postgresql:latest
