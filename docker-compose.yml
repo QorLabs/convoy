@@ -4,8 +4,17 @@ services:
     web:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
         command: ["/start.sh"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        environment:
+            CONVOY_API_VERSION: ${CONVOY_API_VERSION}
+            CONVOY_HOST: ${CONVOY_HOST}
+            CONVOY_DB_HOST: ${CONVOY_DB_HOST}
+            CONVOY_DB_USERNAME: ${POSTGRESQL_USERNAME}
+            CONVOY_DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+            CONVOY_DB_DATABASE: ${POSTGRESQL_DATABASE}
+            CONVOY_DB_OPTIONS: ${POSTGRESQL_OPTIONS}
+            CONVOY_DB_MAX_OPEN_CONN: ${POSTGRESQL_MAX_CONNECTIONS}
+            CONVOY_REDIS_PORT: ${CONVOY_REDIS_PORT}
+            CONVOY_REDIS_HOST: redis_server
         restart: unless-stopped
         ports:
             - "5005:5005"
@@ -18,13 +27,21 @@ services:
         depends_on:
             - postgres
             - redis_server
-            - pgbouncer
 
     worker:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
-        command: ["./cmd", "worker", "--config", "./convoy.json"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        command: ["./cmd", "worker"]
+        environment:
+            CONVOY_API_VERSION: ${CONVOY_API_VERSION}
+            CONVOY_HOST: ${CONVOY_HOST}
+            CONVOY_DB_HOST: ${CONVOY_DB_HOST}
+            CONVOY_DB_USERNAME: ${POSTGRESQL_USERNAME}
+            CONVOY_DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+            CONVOY_DB_DATABASE: ${POSTGRESQL_DATABASE}
+            CONVOY_DB_OPTIONS: ${POSTGRESQL_OPTIONS}
+            CONVOY_DB_MAX_OPEN_CONN: ${POSTGRESQL_MAX_CONNECTIONS}
+            CONVOY_REDIS_PORT: ${CONVOY_REDIS_PORT}
+            CONVOY_REDIS_HOST: redis_server
         restart: unless-stopped
         depends_on:
             web:
@@ -32,39 +49,33 @@ services:
 
     ingest:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
-        command: ["./cmd", "ingest", "--config", "./convoy.json"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        command: ["./cmd", "ingest"]
+        environment:
+            CONVOY_API_VERSION: ${CONVOY_API_VERSION}
+            CONVOY_HOST: ${CONVOY_HOST}
+            CONVOY_DB_HOST: ${CONVOY_DB_HOST}
+            CONVOY_DB_USERNAME: ${POSTGRESQL_USERNAME}
+            CONVOY_DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+            CONVOY_DB_DATABASE: ${POSTGRESQL_DATABASE}
+            CONVOY_DB_OPTIONS: ${POSTGRESQL_OPTIONS}
+            CONVOY_DB_MAX_OPEN_CONN: ${POSTGRESQL_MAX_CONNECTIONS}
+            CONVOY_REDIS_PORT: ${CONVOY_REDIS_PORT}
+            CONVOY_REDIS_HOST: redis_server
         restart: unless-stopped
         depends_on:
             web:
                 condition: service_healthy
-
-    pgbouncer:
-        image: bitnami/pgbouncer:latest
-        hostname: pgbouncer
-        restart: unless-stopped
-        depends_on:
-            - postgres
-        env_file:
-            - ./conf/.env
-        volumes:
-            - ./conf/:/bitnami/pgbouncer/conf/
-            - ./conf/userlists.txt:/bitnami/userlists.txt
-        ports:
-            - "6432:6432"
-
     postgres:
         image: bitnami/postgresql:latest
         restart: unless-stopped
         ports:
             - "5432:5432"
         environment:
-            POSTGRESQL_DATABASE: convoy
-            POSTGRESQL_USERNAME: convoy
-            POSTGRES_PASSWORD: pg_password
-            POSTGRESQL_MAX_CONNECTIONS: 250
-            POSTGRESQL_POSTGRES_PASSWORD: postgres
+            POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRESQL_DATABASE: ${POSTGRESQL_DATABASE}
+            POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME}
+            POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+            POSTGRESQL_MAX_CONNECTIONS: ${POSTGRESQL_MAX_CONNECTIONS}
             POSTGRESQL_SHARED_PRELOAD_LIBRARIES: pg_stat_statements
         volumes:
           - postgresql_master_data:/bitnami/postgresql
@@ -72,6 +83,8 @@ services:
     redis_server:
         image: redis:alpine
         restart: unless-stopped
+        ports:
+          - '${REDIS_PORT}: 6379'
         volumes:
           - redis_data:/data
 
