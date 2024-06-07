@@ -5,12 +5,12 @@ services:
         volumes:
             - ./convoy.json:/convoy.json
         restart: unless-stopped
-        healthcheck:
-            test: ["CMD-SHELL", "wget -q --spider hooks.dev.qorlabs.io/health"]
-            interval: 5s
-            timeout: 15s
-            retries: 3
-            start_period: 5s
+        # healthcheck:
+        #     test: ["CMD-SHELL", "wget -q --spider hooks.dev.qorlabs.io/health"]
+        #     interval: 5s
+        #     timeout: 15s
+        #     retries: 3
+        #     start_period: 5s
         depends_on:
             # - postgres
             # - redis_server
