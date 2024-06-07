@@ -5,7 +5,7 @@ services:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
         command: ["/start.sh"]
         volumes:
-            - convoy.json:/convoy.json
+            - convoy.json:convoy.json
         restart: unless-stopped
         ports:
             - "5005:5005"
@@ -24,7 +24,7 @@ services:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
         command: ["./cmd", "worker", "--config", "convoy.json"]
         volumes:
-            - convoy.json:/convoy.json
+            - convoy.json:convoy.json
         restart: unless-stopped
         depends_on:
             web:
@@ -34,7 +34,7 @@ services:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
         command: ["./cmd", "ingest", "--config", "convoy.json"]
         volumes:
-            - convoy.json:/convoy.json
+            - convoy.json:convoy.json
         restart: unless-stopped
         depends_on:
             web:
