@@ -13,7 +13,6 @@ services:
             CONVOY_DB_DATABASE: ${POSTGRESQL_DATABASE}
             CONVOY_DB_OPTIONS: ${POSTGRESQL_OPTIONS}
             CONVOY_DB_MAX_OPEN_CONN: ${POSTGRESQL_MAX_CONNECTIONS}
-            CONVOY_REDIS_PORT: ${CONVOY_REDIS_PORT}
             CONVOY_REDIS_HOST: redis_server
         restart: unless-stopped
         healthcheck:
