@@ -20,7 +20,7 @@ services:
         depends_on:
             - postgres
             - redis_server
-            - pgbouncer
+            # - pgbouncer
 
     worker:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
