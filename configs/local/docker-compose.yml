@@ -4,8 +4,10 @@ services:
     web:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
         command: ["/start.sh"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        env_file:
+            - ./conf/.env
+        # volumes:
+        #     - ./convoy.json:/convoy.json
         restart: unless-stopped
         ports:
             - "5005:5005"
@@ -22,9 +24,11 @@ services:
 
     worker:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
-        command: ["./cmd", "worker", "--config", "./convoy.json"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        command: ["./cmd", "worker"]
+        env_file:
+            - ./conf/.env
+        # volumes:
+        #     - ./convoy.json:/convoy.json
         restart: unless-stopped
         depends_on:
             web:
@@ -32,9 +36,11 @@ services:
 
     ingest:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
-        command: ["./cmd", "ingest", "--config", "./convoy.json"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        command: ["./cmd", "ingest"]
+        env_file:
+            - ./conf/.env
+        # volumes:
+        #     - ./convoy.json:/convoy.json
         restart: unless-stopped
         depends_on:
             web:
