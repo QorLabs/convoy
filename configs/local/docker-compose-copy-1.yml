@@ -3,9 +3,19 @@ version: "3"
 services:
     web:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
-        command: ["/start.sh"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        command: [
+            "/start.sh",
+            "--host", "localhost:5005",
+            "--db-host", "pgbouncer",
+            "--db-username", "convoy",
+            "--db-password", "pg_password",
+            "--db-database", "convoy",
+            "--db-port", 6432,
+            "--redis-port", 6379,
+            "--redis-host", "redis_server"
+            ]
+        # volumes:
+        #     - ./convoy.json:/convoy.json
         restart: unless-stopped
         ports:
             - "5005:5005"
@@ -22,9 +32,18 @@ services:
 
     worker:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
-        command: ["./cmd", "worker", "--config", "convoy.json"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        command: ["./cmd", "worker",
+            "--host", "localhost:5005",
+            "--db-host", "pgbouncer",
+            "--db-username", "convoy",
+            "--db-password", "pg_password",
+            "--db-database", "convoy",
+            "--db-port", 6432,
+            "--redis-port", 6379,
+            "--redis-host", "redis_server"
+        ]
+        # volumes:
+        #     - ./convoy.json:/convoy.json
         restart: unless-stopped
         depends_on:
             web:
@@ -32,9 +51,18 @@ services:
 
     ingest:
         image: docker.cloudsmith.io/convoy/convoy/frain-dev/convoy:v24.5.1
-        command: ["./cmd", "ingest", "--config", "convoy.json"]
-        volumes:
-            - ./convoy.json:/convoy.json
+        command: ["./cmd", "ingest",
+            "--host", "localhost:5005",
+            "--db-host", "pgbouncer",
+            "--db-username", "convoy",
+            "--db-password", "pg_password",
+            "--db-database", "convoy",
+            "--db-port", 6432,
+            "--redis-port", 6379,
+            "--redis-host", "redis_server"
+        ]
+        # volumes:
+        #     - ./convoy.json:/convoy.json
         restart: unless-stopped
         depends_on:
             web:
